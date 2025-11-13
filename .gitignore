@@ -1,0 +1,41 @@
+# Ignore virtual environment directories
+venv/
+env/
+.venv/
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+# Ignore distribution/build directories
+build/
+dist/
+eggs/
+*.egg-info/
+# ignore large file that are more than 20MB
+*.zip
+*.tar.gz
+*.tar
+*.rar
+*.7z
+*.mp4
+*.mkv
+*.iso
+*.exe
+*.bin
+*.dmg
+*.iso
+*.img
+*.vmdk
+*.ova
+*.bak
+*.log
+# Ignore IDE specific files 
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+# Ignore system files
+.DS_Store
+Thumbs.db
+# Ignore coverage reports
