@@ -1,87 +1,188 @@
+# Deep Q-Learning for Pong
 
-# Folder Structure 
+#### **Overview**
 
-Assignment3/
+This project implements a Deep Q-Network (DQN) to teach an artificial agent how to play Atari Pong from raw pixels using reinforcement learning.
+
+**The code follows:**
+
+- Clean modular structure
+- Industry-standard coding practices
+- Full logging (CSV), checkpointing, and safety checks
+- Multiple experiment configurations
+- Automatic comparison plots
+
+The agent sees the game as stacked grayscale frames and learns using experience replay and target networks — the classic DQN algorithm.
+
+#### Project Folder Structure
+
+
+RL_Assignment3/
 │
-├── assignment3_utils.py        # (given to you)
-├── replay_buffer.py            # implements experience replay
-├── model.py                    # defines the DQN CNN
-├── agent.py                    # defines DQNAgent class
-├── train_pong_dqn.py           # main training script
-├── evaluate_and_plot.py        # script for generating plots and comparisons
-└── report_template.md          # report text (convert to PDF)
+├── model.py                  # CNN DQN architecture
+├── agent.py                  # Epsilon-greedy action selection agent
+├── replay_buffer.py          # Experience replay memory
+├── train.py                  # Training loop, evaluation, logging, checkpointing
+├── run_experiments.py        # Runs 4 experiment configs + comparison plot
+├── assignment3_utils.py      # Frame preprocessing + reward shaping
+│
+├── results/                  # Auto-generated logs, plots, and checkpoints
+│   ├── batch8_target10_rewards.npy
+│   ├── batch16_target10_rewards.npy
+│   ├── batch8_target3_rewards.npy
+│   ├── batch16_target3_rewards.npy
+│   ├── comparison_plot.png
+│   ├── *_reward_plot.png
+│   ├── *_training_log.csv
+│   └── dqn_checkpoint.pth
+│
+├── README.md                 # ← (this file)
+└── requirements.txt          # Python dependencies
+
+#### 🚀 Features
+
+✔ Modular design (clear separation of model, agent, buffer, training)
+✔ Checkpoint saving + auto resume
+✔ CSV logging for losses, rewards, epsilon
+✔ Safe environment resets & step handling
+✔ Replay buffer size checks
+✔ Four experiment configurations:
+  - Batch 8 / Target 10
+  - Batch 16 / Target 10
+  - Batch 8 / Target 3
+  - Batch 16 / Target 3
+✔ Automatic combined performance plot
+
+#### Algorithm Summary 
+
+- The agent sees 4 game frames at a time.
+- A neural network predicts Q-values (goodness of moves).
+- The agent sometimes explores (random moves) and sometimes exploits (best move).
+- Experiences are stored in the replay buffer to train from random past events.
+- A “target network” stabilizes learning by updating slowly.
+
+Over 500 episodes, the agent gets slightly better at Pong.
+
+#### 🛠 Installation
+
+**1. Clone this repository:**
+
+git clone this repo
+cd RL_Assignment3
+
+**2. Create and activate a virtual environment:**
+
+python -m venv venv
+source venv/bin/activate      # macOS/Linux
+venv\Scripts\activate         # Windows
+
+**3. Install dependencies:**
+
+pip install -r requirements.txt
+
+4. Install Gym Atari support:
+pip install gymnasium[atari]
+pip install gymnasium[accept-rom-license]
+
+##### ▶️ How to Run the Experiments
+
+Run all 4 experiments automatically:
+
+`python run_experiments.py`
 
 
-# Step-by-Step Implementation Plan
+**This will:**
 
-1️⃣ **replay_buffer.py**
+- Train 4 models
+- Save plots, logs, and checkpoints
+- Produce a comparison plot in results/comparison_plot.png
 
-Implements the ReplayBuffer class.
-Handles experience storage and random sampling.
+##### 📊 Output Files
 
-2️⃣ **model.py**
+**Inside results/, you will find:**
 
-Implements the CNN-based DQN model using PyTorch:
+File	
 
-3 Conv layers, 2 Fully connected layers
+#### Experiment Configurations
 
-Dynamic computation of convolution output
+Each experiment varies batch size and target update frequency:
 
-Outputs Q-values for 6 actions
+Experiment	Batch Size	Target Update	Purpose
+A	8	10	Baseline: stable, lighter updates
+B	16	10	Larger batch → smoother learning
+C	8	3	Faster target updates (more unstable)
+D	16	3	Large batch + fast updates
 
-3️⃣ **agent.py**
+Running all 4 helps understand how these hyperparameters affect stability.
 
-Implements:
+#### 📈 Expected Results (Based on Assignment Requirements)
 
-DQNAgent class
+Your agent will:
 
-ε-greedy action selection
+Start scoring -21 to -20 (random play)
 
-Learning step with Bellman target
+Slowly reach -17 to -16 average
 
-Target network update every N episodes
+Not become good at Pong within 500 episodes
+(normal DQN takes > 1,000 to 10,000 episodes)
 
-Epsilon decay
+Example Partial Log:
+Ep 000 | Reward: -20.0 | Avg5: -20.00 | Eps: 1.00
+Ep 010 | Reward: -21.0 | Avg5: -20.60 | Eps: 0.05
+Ep 200 | Reward: -19.0 | Avg5: -18.00 | Eps: 0.05
+Ep 210 | Reward: -16.0 | Avg5: -17.40 | Eps: 0.05
 
-4️⃣ **train_pong_dqn.py**
+####  Code Explanation (High-Level)
 
-Handles:
+**1.model.py**
 
-Environment creation (PongDeterministic-v4)
+Defines DQNCNN — a CNN matching the original DeepMind architecture.
 
-Preprocessing via assignment3_utils.py
+**2.agent.py**
 
-Frame stacking (4 frames as one state)
+Handles epsilon-greedy action selection.
 
-Training loop over episodes
+**3.replay_buffer.py**
 
-Logging (episode, score, avg reward, epsilon)
+Stores experiences and samples random batches.
 
-Model checkpointing
+**4.train.py**
 
-5️⃣ **evaluate_and_plot.py**
+Core training loop:
 
-Generates:
+gameplay
 
-Episode vs Score
+replay buffer updates
 
-Episode vs Average Reward (last 5)
-Plots for:
+gradient updates
 
-Batch size variation: [8, 16]
+target network sync
 
-Target update frequency: [3, 10]
+checkpoint saving
 
-6️⃣ **report_template.md**
+CSV logging
 
-Markdown report containing:
+run_experiments.py
 
-Introduction (about DQN, Pong, motivation)
+Runs all experiment configurations, saves plots, and generates comparison charts.
 
-Methodology (preprocessing, CNN architecture)
+🐞 Troubleshooting
+Pong not found?
 
-Experiments (batch size and target update ablations)
+Install Atari ROMs:
 
-Results & Discussion (plots and insights)
+pip install gymnasium[atari]
+pip install gymnasium[accept-rom-license]
 
-Conclusion (best configuration and justification)
+Black screens or shape errors?
+
+Likely preprocessing mismatch → confirm frame shape = (84, 80).
+
+Loss becomes NaN?
+
+The code already includes:
+
+if torch.isnan(loss): skip update
+
+
+This prevents crashes.
