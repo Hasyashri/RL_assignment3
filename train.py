@@ -45,7 +45,7 @@ def evaluate_agent(env, model, image_shape, episodes=5):
         scores.append(total_reward)
 
     avg = np.mean(scores)
-    print(f"✅ Evaluation avg reward over {episodes} episodes: {avg:.2f}")
+    print(f" Evaluation avg reward over {episodes} episodes: {avg:.2f}")
     return avg
 
 # ---------------- DQN Training Function ----------------
@@ -164,7 +164,7 @@ def train_dqn(
                 'epsilon': epsilon,
                 'episode': episode
             }, checkpoint_path)
-            print(f"💾 Checkpoint saved at episode {episode}")
+            print(f" Checkpoint saved at episode {episode}")
 
         # Logging
         rewards_per_episode.append(total_reward)

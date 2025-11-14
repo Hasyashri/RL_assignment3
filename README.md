@@ -18,25 +18,36 @@ The agent sees the game as stacked grayscale frames and learns using experience 
 
 
 RL_Assignment3/
+
 │
 ├── model.py                  # CNN DQN architecture
+
 ├── agent.py                  # Epsilon-greedy action selection agent
+
 ├── replay_buffer.py          # Experience replay memory
+
 ├── train.py                  # Training loop, evaluation, logging, checkpointing
+
 ├── run_experiments.py        # Runs 4 experiment configs + comparison plot
+
 ├── assignment3_utils.py      # Frame preprocessing + reward shaping
+
 │
-├── results/                  # Auto-generated logs, plots, and checkpoints
-│   ├── batch8_target10_rewards.npy
-│   ├── batch16_target10_rewards.npy
-│   ├── batch8_target3_rewards.npy
-│   ├── batch16_target3_rewards.npy
+├── results/                  # Auto-generated  plots, and checkpoints
+
+│   ├── batch8_target10_rewards.npy and png
+
+│   ├── batch16_target10_rewards.npy and png
+
+│   ├── batch8_target3_rewards.npy and png
+
+│   ├── batch16_target3_rewards.npy and png
+
 │   ├── comparison_plot.png
-│   ├── *_reward_plot.png
-│   ├── *_training_log.csv
-│   └── dqn_checkpoint.pth
+
 │
 ├── README.md                 # ← (this file)
+
 └── requirements.txt          # Python dependencies
 
 #### 🚀 Features
